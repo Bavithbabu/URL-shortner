@@ -73,4 +73,6 @@ func ShortenURL(c *fiber.Ctx) error {
 	// TODO: Add URL shortening logic here
 
 	r2.Decr(database.Ctx, c.IP())
+
+	return c.Status(fiber.StatusNotImplemented).JSON(fiber.Map{"error": "URL shortening not yet implemented"})
 }
