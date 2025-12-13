@@ -84,7 +84,8 @@ func ShortenURL(c *fiber.Ctx) error {
 	r := database.CreateClient(0)
 	defer r.Close()
 
-	val, _ = r.Get(database.Ctx, id).Result()
+	// Check if custom short already exists using new key format
+	val, _ = r.Get(database.Ctx, "url:"+id).Result()
 	if val != "" {
 		return c.Status(fiber.StatusForbidden).JSON(fiber.Map{
 			"error": "URL custom short is already in use",
@@ -95,13 +96,27 @@ func ShortenURL(c *fiber.Ctx) error {
 		body.Expiry = 24
 	}
 
-	err = r.Set(database.Ctx, id, body.URL, body.Expiry*3600*time.Second).Err()
+	// Store URL data in Redis Hash with metadata
+	urlData := map[string]interface{}{
+		"url":     body.URL,
+		"ip":      c.IP(),
+		"created": time.Now().Unix(),
+		"expiry":  body.Expiry,
+	}
 
+	err = r.HSet(database.Ctx, "url:"+id, urlData).Err()
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": "Unable to connect to server",
 		})
 	}
+
+	// Set expiry on the hash
+	r.Expire(database.Ctx, "url:"+id, body.Expiry*3600*time.Second)
+
+	// Add shortcode to user's URL set
+	r.SAdd(database.Ctx, "user:"+c.IP()+":urls", id)
+	r.Expire(database.Ctx, "user:"+c.IP()+":urls", body.Expiry*3600*time.Second)
 
 	resp := response{
 		URL:             body.URL,

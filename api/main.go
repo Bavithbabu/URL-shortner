@@ -12,8 +12,12 @@ import (
 )
 
 func setupRoutes(app *fiber.App) {
+
 	app.Get("/:url", routes.ResolveURL)
 	app.Post("/api/v1", routes.ShortenURL)
+	app.Get("api/v1/urls", routes.ListUserURLs)             // New routes
+	app.Get("/api/v1/url/:shortcode", routes.GetURLDetails) // get the single url detailsi
+	app.Delete("/api/v1/url/:shortcode", routes.DeleteURL)  // Route for deleting the url
 }
 
 func main() {
