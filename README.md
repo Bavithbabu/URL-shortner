@@ -14,7 +14,7 @@ A powerful and efficient URL shortening service built with Go, Fiber, and Redis.
 - ✅ **URL Validation** - Ensures only valid URLs are shortened
 - ✅ **Docker Support** - Easy deployment with Docker Compose
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Backend:** Go (Golang)
 - **Framework:** Fiber v2
@@ -28,7 +28,7 @@ A powerful and efficient URL shortening service built with Go, Fiber, and Redis.
 - Go 1.23+ (for local development)
 - Redis (handled by Docker)
 
-## 🔧 Installation & Setup
+##  Installation & Setup
 
 ### 1. Clone the repository
 
@@ -220,16 +220,16 @@ URL-shortner/
 - [ ] Custom domains
 - [ ] API key authentication
 
-## 👨‍💻 Author
+##  Author
 
 **Bavithbabu**
 - GitHub: [@Bavithbabu](https://github.com/Bavithbabu)
 
-## 📄 License
+##  License
 
 This project is open source and available under the MIT License.
 
-## 🤝Contributing
+## Contributing
 
 Contributions, issues, and feature requests are welcome!
 
